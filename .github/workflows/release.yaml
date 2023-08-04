@@ -1,0 +1,30 @@
+name: release
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Go 1.20.x
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20.x'
+      - name: Install dependencies
+        run: |
+          go get -v -t -d ./...
+          if [ -f Gopkg.toml ]; then
+          curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+          dep ensure
+          fi
+      - name: Build
+          export GOPROXY=direct
+          sudo apt-get update
+          sudo apt-get install gcc-mingw-w64-i686 gcc-multilib
+          CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -o to-markdown.exe -ldflags "-s -w -extldflags -static -extldflags -static" .main.go
+          tar -czvf to-markdown.tar.gz font/simkai.ttf to-markdown.exe
+      - name: Upload
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            to-markdown.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

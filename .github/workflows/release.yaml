@@ -1,4 +1,11 @@
 name: release
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+    branches: [ master ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,10 +20,11 @@ jobs:
         run: |
           go get -v -t -d ./...
           if [ -f Gopkg.toml ]; then
-          curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-          dep ensure
+            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+            dep ensure
           fi
       - name: Build
+        run: |
           export GOPROXY=direct
           sudo apt-get update
           sudo apt-get install gcc-mingw-w64-i686 gcc-multilib

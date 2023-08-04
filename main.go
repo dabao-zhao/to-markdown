@@ -67,9 +67,7 @@ func main() {
 
 	w.SetContent(c)
 
-	w.Show()
-
-	a.Run()
+	w.ShowAndRun()
 }
 
 func registerChinese() {

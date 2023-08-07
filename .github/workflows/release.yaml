@@ -28,7 +28,7 @@ jobs:
           export GOPROXY=direct
           sudo apt-get update
           sudo apt-get install gcc-mingw-w64-x86-64 zip gcc libgl1-mesa-dev xorg-dev
-          go install fyne.io/fyne/v2/cmd/fyne_demo@latest
+          go install fyne.io/fyne/v2/cmd/fyne@latest
           CC=x86_64-w64-mingw32-gcc fyne package -os windows
           zip to-markdown.zip font/simkai.ttf to-markdown.exe
       - name: Upload

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   release:
     types: [published]
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -19,6 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           go get -v -t -d ./...
+          go install fyne.io/fyne/v2/cmd/fyne_demo@latest
           if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
@@ -28,7 +29,7 @@ jobs:
           export GOPROXY=direct
           sudo apt-get update
           sudo apt-get install gcc-mingw-w64-x86-64 zip
-          CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc go build -ldflags "-s -w -H=windowsgui" -o to-markdown.exe main.go
+          CC=x86_64-w64-mingw32-gcc fyne package -os windows
           zip to-markdown.zip font/simkai.ttf to-markdown.exe
       - name: Upload
         uses: softprops/action-gh-release@v1

@@ -1,0 +1,7 @@
+Website = "https://github.com/dabao-zhao/to-markdown"
+[Details]
+  Icon = "Icon.png"
+  Name = "to-markdown"
+  ID = "to-markdown"
+  Version = "0.0.1"
+  Build = 1
